@@ -26,12 +26,19 @@ var animation_name: StringName
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
+		instigator.script_changed.connect(_update)
 		return
-	if instigator and _player\
-			and (not _player is AnimationPlayer or _player.has_animation(animation_name)):
-		instigator.connect(signal_name, _play)
-	else:
-		push_warning("EFXPlayOnSighal not properly setuped so it's not working ", get_path())
+	if not instigator:
+		push_warning("EFXPlayOnSighal has no instigator ", get_path())
+		return
+	if not _player:
+		push_warning("EFXPlayOnSighal has no player ", get_path())
+		return
+	if _player is AnimationPlayer and not _player.has_animation(animation_name):
+		push_warning("EFXPlayOnSighal player has not animation named ", animation_name, " ", get_path())
+		return
+	instigator.connect(signal_name, _play)
+
 
 func _enter_tree() -> void:
 	_update()
