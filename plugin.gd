@@ -3,10 +3,9 @@ extends EditorPlugin
 
 
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
-	pass
+	var gui = get_editor_interface().get_base_control()
+	add_custom_type("EFXPlayOnSignal", "Node", preload("uid://dbgp8o5pnif4w"), gui.get_theme_icon("Signals", "EditorIcons"))
 
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
-	pass
+	remove_custom_type("EFXPlayOnSignal")
