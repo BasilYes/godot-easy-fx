@@ -38,7 +38,8 @@ func _ready() -> void:
 	if _player is AnimationPlayer and not _player.has_animation(animation_name):
 		push_warning("EFXPlayOnSighal player has not animation named ", animation_name, " ", get_path())
 		return
-	instigator.connect(signal_name, _play)
+	if signal_name:
+		instigator.connect(signal_name, _play)
 
 
 func _enter_tree() -> void:
