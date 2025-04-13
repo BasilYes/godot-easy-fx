@@ -3,6 +3,7 @@ class_name EFXPlayOnSignal
 extends Node
 
 #@export_tool_button("Update") var update = _update
+@export var play: bool = true
 @export var instigator: Node
 # hint: PropertyHint, hint_string: String, usage: BitField[PropertyUsageFlags
 #var player: Node :
@@ -84,7 +85,7 @@ func _get_property_list() -> Array[Dictionary]:
 			"hint": PROPERTY_HINT_ENUM,
 			"hint_string": Array(_player.get_animation_list()).reduce(func(a: String, b: Variant) -> String:
 				if b is String:
-					return a + "," + b 
+					return a + "," + b
 				return a),
 			"usage": PROPERTY_USAGE_DEFAULT
 		})
@@ -97,11 +98,21 @@ func _play(
 	_a4: Variant = null,
 	_a5: Variant = null,
 ) -> void:
-	if _player is AnimationPlayer:
-		_player.play(animation_name)
-	elif _player is AudioStreamPlayer:
-		_player.play()
-	elif _player is AudioStreamPlayer2D:
-		_player.play()
-	elif _player is AudioStreamPlayer3D:
-		_player.play()
+	if play:
+		if _player is AnimationPlayer:
+			_player.play(animation_name)
+		elif _player is AudioStreamPlayer:
+			_player.play()
+		elif _player is AudioStreamPlayer2D:
+			_player.play()
+		elif _player is AudioStreamPlayer3D:
+			_player.play()
+	else:
+		if _player is AnimationPlayer:
+			_player.stop()
+		elif _player is AudioStreamPlayer:
+			_player.stop()
+		elif _player is AudioStreamPlayer2D:
+			_player.stop()
+		elif _player is AudioStreamPlayer3D:
+			_player.stop()
