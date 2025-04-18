@@ -17,7 +17,12 @@ extends Node
 	"AudioStreamPlayer2D",
 	"AudioStreamPlayer3D",
 	"AudioStreamPlayer"
-) var player: NodePath
+) var player: NodePath :
+	set(value):
+		player = value
+		if not Engine.is_editor_hint():
+			return
+		_player = get_node_or_null(player)
 var _player: Node :
 	set(value):
 		if not (value is AudioStreamPlayer
@@ -26,7 +31,12 @@ var _player: Node :
 				or value is AnimationPlayer):
 			push_warning("player value can be only animation or audio player")
 			return
+		if _player == value:
+			return
 		_player = value
+		if not Engine.is_editor_hint():
+			return
+		_update()
 var signal_name: StringName
 var animation_name: StringName
 
@@ -40,7 +50,7 @@ func _ready() -> void:
 	if not _player:
 		push_warning("EFXPlayOnSighal has no player ", get_path())
 		return
-	if _player is AnimationPlayer and not _player.has_animation(animation_name):
+	if _player is AnimationPlayer and play and not _player.has_animation(animation_name):
 		push_warning("EFXPlayOnSighal player has not animation named ", animation_name, " ", get_path())
 		return
 	if instigator.has_signal(signal_name):
@@ -64,14 +74,12 @@ func _update() -> void:
 			or (self as Node) is AudioStreamPlayer3D
 			or (self as Node) is AnimationPlayer):
 		player = "./"
-		_player = self
 	if (not _player or not player)\
 			and ((get_parent() as Node) is AudioStreamPlayer
 			or (get_parent() as Node) is AudioStreamPlayer2D
 			or (get_parent() as Node) is AudioStreamPlayer3D
 			or (get_parent() as Node) is AnimationPlayer):
 		player = "../"
-		_player = get_parent()
 	if not instigator:
 		instigator = get_parent()
 	notify_property_list_changed()

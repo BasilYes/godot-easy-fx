@@ -68,30 +68,31 @@ func _get_property_list() -> Array[Dictionary]:
 				return a + "," + b),
 			"usage": PROPERTY_USAGE_DEFAULT
 		})
-	out.append({
-		"name": "value_name",
-		"type": Variant.Type.TYPE_STRING_NAME,
-		"hint": PROPERTY_HINT_ENUM,
-		"hint_string": get_parent().get_property_list().reduce(func(a: Variant, b: Variant) -> String:
-			if b.type not in ALLOWED_TYPES or not (b.usage & PROPERTY_USAGE_EDITOR):
-				b = ""
-			else:
-				b = b.name
-			if a is Dictionary:
-				if a.type not in ALLOWED_TYPES or not (a.usage & PROPERTY_USAGE_EDITOR):
-					a = ""
+	if get_parent():
+		out.append({
+			"name": "value_name",
+			"type": Variant.Type.TYPE_STRING_NAME,
+			"hint": PROPERTY_HINT_ENUM,
+			"hint_string": get_parent().get_property_list().reduce(func(a: Variant, b: Variant) -> String:
+				if b.type not in ALLOWED_TYPES or not (b.usage & PROPERTY_USAGE_EDITOR):
+					b = ""
 				else:
-					a = a.name
-			if a == "":
-				if b == "":
-					return ""
-				return b
-			else:
-				if b == "":
-					return a
-				return a + "," + b
-			return ""),
-		"usage": PROPERTY_USAGE_DEFAULT
+					b = b.name
+				if a is Dictionary:
+					if a.type not in ALLOWED_TYPES or not (a.usage & PROPERTY_USAGE_EDITOR):
+						a = ""
+					else:
+						a = a.name
+				if a == "":
+					if b == "":
+						return ""
+					return b
+				else:
+					if b == "":
+						return a
+					return a + "," + b
+				return ""),
+			"usage": PROPERTY_USAGE_DEFAULT
 	})
 	out.append({
 		"name": "value",

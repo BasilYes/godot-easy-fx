@@ -9,6 +9,8 @@ var backward_signal_name: String = ""
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	if target.has_signal(forward_signal_name):
 		target.connect(forward_signal_name, play.bind(1.0, false, true))
 	if target.has_signal(backward_signal_name):
