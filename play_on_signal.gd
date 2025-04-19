@@ -110,6 +110,7 @@ func _get_property_list() -> Array[Dictionary]:
 		})
 	return out
 
+
 func _play(
 	_a1: Variant = null,
 	_a2: Variant = null,

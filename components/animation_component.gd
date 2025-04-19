@@ -150,6 +150,9 @@ func setup_ancher(immidiate: bool = true, speed: float = 1.0) -> void:
 
 
 func play(speed: float = 1.0, from_end: bool = false, override: bool = true) -> void:
+	if not value_name in target:
+		push_warning("No value named %s in parent Node %s" % [value_name, target.get_path() if is_inside_tree() else "not inside tree"])
+		return
 	if target.get(value_name) == (default_value if from_end else value):
 		return
 	var meta_name: String = "fui_animation_"+value_name
